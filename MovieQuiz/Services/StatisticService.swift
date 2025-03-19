@@ -37,7 +37,7 @@ final class StatisticService: StatisticServiceProtocol {
     
     var totalAccuracy: Double {
         let count = gamesCount != 0 ? gamesCount : 1
-        return Double(correctAnswers) / (Double(gamesCount) * 10) * 100
+        return Double(correctAnswers) / (Double(count) * 10) * 100
     }
     
     func store(gameResult: GameResult) {
