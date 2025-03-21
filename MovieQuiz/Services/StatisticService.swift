@@ -1,8 +1,8 @@
 import Foundation
 
 final class StatisticService: StatisticServiceProtocol {
-    private let storage: UserDefaults = .standard
     
+    private let storage: UserDefaults = .standard
     private var correctAnswers: Int {
         get {
             storage.integer(forKey: Keys.correctAnswers.rawValue)

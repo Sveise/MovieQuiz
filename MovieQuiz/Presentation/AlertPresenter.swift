@@ -1,6 +1,7 @@
 import UIKit
 
-class AlertPresenter {
+final class AlertPresenter {
+    
     weak var viewController: UIViewController?
     
     init(viewController: UIViewController?) {
@@ -12,15 +13,10 @@ class AlertPresenter {
             title: result.title,
             message: result.text,
             preferredStyle: .alert)
-        
         let action = UIAlertAction(title: result.buttonText, style: .default) { _ in
             result.completion()
         }
-    
-       
         alert.addAction(action)
-        
         viewController?.present(alert, animated: true, completion: nil)
     }
-    
 }

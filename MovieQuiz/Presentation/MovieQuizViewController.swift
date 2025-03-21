@@ -1,15 +1,15 @@
 import UIKit
 
 final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
-     
-    
+
+    // MARK: - IB Outlets
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
-    
     @IBOutlet private weak var noButton: UIButton!
     @IBOutlet private weak var yesButton: UIButton!
     
+    // MARK: - Private Properties
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private let questionsAmount: Int = 10
@@ -17,8 +17,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     private var currentQuestion: QuizQuestion?
     private lazy var alertPresenter = AlertPresenter(viewController: self)
     private var statisticService: StatisticServiceProtocol = StatisticService()
-
     
+    // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
         let questionFactory = QuestionFactory()
@@ -26,10 +26,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         self.questionFactory = questionFactory
         questionFactory.requestNextQuestion()
     }
-        
+ 
+    // MARK: - IB Actions
+     @IBAction private func noButtonClicked(_ sender: UIButton) {
+         guard let currentQuestion = currentQuestion else {
+             return
+         }
+         let givenAnswer = false
+         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+         
+     }
+     
+     @IBAction private func yesButtonClicked(_ sender: UIButton) {
+         guard let currentQuestion = currentQuestion else {
+             return
+         }
+         let givenAnswer = true
+         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+     }
 
+    // MARK: - Public Methods
     func didReceiveNextQuestion(question: QuizQuestion?) {
-        guard let question = question else {
+        guard let question else {
             return
         }
         currentQuestion = question
@@ -38,13 +56,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             self.show(quiz: viewModel)
         }
     }
-    
-    private struct ViewModel {
-        let image: UIImage
-        let question: String
-        let questionNumber: String
-    }
-    
+
+    // MARK: - Private Methods
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
         let questionStep = QuizStepViewModel(image: UIImage(named: model.image) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
         )
@@ -99,7 +112,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 buttonText: "Сыграть ещё раз",
                 completion: {
                                 [weak self] in
-                                guard let self = self else { return }
+                                guard let self else { return }
                                 self.currentQuestionIndex = 0
                                 self.correctAnswers = 0
                                 self.noButton.isEnabled = true
@@ -114,23 +127,11 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             yesButton.isEnabled = true
         }
     }
-       
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
-    }
     
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+    private struct ViewModel {
+        let image: UIImage
+        let question: String
+        let questionNumber: String
     }
-
 }
 
