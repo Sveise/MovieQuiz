@@ -11,13 +11,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     @IBOutlet private var activityIndicator: UIActivityIndicatorView!
     
     // MARK: - Private Properties
-    private var currentQuestionIndex = 0
     private var correctAnswers = 0
-    private let questionsAmount: Int = 10
     private var questionFactory: QuestionFactoryProtocol?
     private var currentQuestion: QuizQuestion?
     private lazy var alertPresenter = AlertPresenter(viewController: self)
     private var statisticService: StatisticServiceProtocol = StatisticService()
+    private let presenter = MovieQuizPresenter()
     
     // MARK: - View Life Cycles
     override func viewDidLoad() {
@@ -52,7 +51,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             return
         }
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async {
             self.show(quiz: viewModel)
             self.hideLoadingIndicator()
@@ -68,9 +67,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     // MARK: - Private Methods
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        QuizStepViewModel(image: UIImage(data: model.imageData) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
-    }
     
     private func show(quiz step: QuizStepViewModel) {
         imageView.image = step.image
@@ -108,12 +104,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.borderWidth = 0
         imageView.layer.borderColor = nil
         imageView.layer.cornerRadius = 20
-        if currentQuestionIndex == questionsAmount - 1 {
-            statisticService.store(gameResult: GameResult(correct: correctAnswers, total: questionsAmount, date: Date()))
+        if presenter.isLastQuestion() {
+            statisticService.store(gameResult: GameResult(correct: correctAnswers, total: presenter.questionsAmount, date: Date()))
             let viewModel = AlertModel(
                 title: "Этот раунд окончен!",
                 text: """
-                Ваш результат: \(correctAnswers)/\(questionsAmount)
+                Ваш результат: \(correctAnswers)/\(presenter.questionsAmount)
                 Количество сыграных квизов: \(statisticService.gamesCount)
                 Рекорд: \(statisticService.bestGame.correct)/\(statisticService.bestGame.total) \(statisticService.bestGame.date.dateTimeString)
                 Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
@@ -122,7 +118,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 completion: {
                     [weak self] in
                     guard let self else { return }
-                    self.currentQuestionIndex = 0
+                    self.presenter.resetQuestionIndex()
                     self.correctAnswers = 0
                     self.noButton.isEnabled = true
                     self.yesButton.isEnabled = true
@@ -131,7 +127,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
                 })
             alertPresenter.show(result: viewModel)
         } else {
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             questionFactory?.loadData()
             noButton.isEnabled = true
             yesButton.isEnabled = true
@@ -151,7 +147,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         let alertError = AlertModel(title: "Что-то пошло не так(", text: message, buttonText: "Попробовать еще раз") { [weak self] in
             guard let self else { return }
             self.showLoadingIndicator()
-            self.currentQuestionIndex = 0
+            self.presenter.resetQuestionIndex()
             self.correctAnswers = 0
             self.noButton.isEnabled = true
             self.yesButton.isEnabled = true
