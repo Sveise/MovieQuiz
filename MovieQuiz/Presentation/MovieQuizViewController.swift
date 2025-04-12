@@ -13,7 +13,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - Private Properties
     private var correctAnswers = 0
     private var questionFactory: QuestionFactoryProtocol?
-    private var currentQuestion: QuizQuestion?
+
     private lazy var alertPresenter = AlertPresenter(viewController: self)
     private var statisticService: StatisticServiceProtocol = StatisticService()
     private let presenter = MovieQuizPresenter()
@@ -21,6 +21,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     // MARK: - View Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.viewController = self
         showLoadingIndicator()
         questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
         statisticService = StatisticService()
@@ -29,20 +30,13 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     
     // MARK: - IB Actions
     @IBAction private func noButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = false
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
-        
+        presenter.currentQuestion = presenter.currentQuestion
+       presenter.noButtonClicked()
     }
-    
+        
     @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        guard let currentQuestion = currentQuestion else {
-            return
-        }
-        let givenAnswer = true
-        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        presenter.currentQuestion = presenter.currentQuestion
+       presenter.yesButtonClicked()
     }
     
     // MARK: - Public Methods
@@ -50,7 +44,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         guard let question else {
             return
         }
-        currentQuestion = question
+        presenter.currentQuestion = question
         let viewModel = presenter.convert(model: question)
         DispatchQueue.main.async {
             self.show(quiz: viewModel)
@@ -75,7 +69,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         imageView.layer.cornerRadius = 20
     }
     
-    private func showAnswerResult(isCorrect: Bool) {
+    func showAnswerResult(isCorrect: Bool) {
         if isCorrect == true {
             imageView.layer.masksToBounds = true
             imageView.layer.borderWidth = 8
