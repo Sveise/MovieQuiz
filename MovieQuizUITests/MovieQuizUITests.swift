@@ -1,5 +1,6 @@
 import XCTest
 
+
 final class MovieQuizUITests: XCTestCase {
     
     var app: XCUIApplication!
@@ -62,7 +63,7 @@ final class MovieQuizUITests: XCTestCase {
         sleep(2)
         for _ in 1...10 {
             app.buttons["No"].tap()
-            sleep(2)
+            sleep(5)
         }
         
         let alert = app.alerts["Этот раунд окончен!"]
@@ -76,13 +77,13 @@ final class MovieQuizUITests: XCTestCase {
         sleep(2)
         for _ in 1...10 {
             app.buttons["No"].tap()
-            sleep(2)
+            sleep(5)
         }
         
         let alert = app.alerts["Этот раунд окончен!"]
         alert.buttons.firstMatch.tap()
         
-        sleep(2)
+        sleep(7)
         
         let indexLabel = app.staticTexts["Index"]
         

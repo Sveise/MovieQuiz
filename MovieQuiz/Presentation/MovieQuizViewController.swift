@@ -91,4 +91,3 @@ final class MovieQuizViewController: UIViewController, MovieQuizViewControllerPr
         let questionNumber: String
     }
 }
-

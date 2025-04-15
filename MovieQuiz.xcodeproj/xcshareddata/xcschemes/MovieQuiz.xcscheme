@@ -29,6 +29,63 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "003E589A2D9FBA570067747E"
+               BuildableName = "&#x421;&#x447;&#x435;&#x442;TestsReal1.xctest"
+               BlueprintName = "&#x421;&#x447;&#x435;&#x442;TestsReal1"
+               ReferencedContainer = "container:MovieQuiz.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "003E58AE2D9FC3100067747E"
+               BuildableName = "ArrayTests.xctest"
+               BlueprintName = "ArrayTests"
+               ReferencedContainer = "container:MovieQuiz.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "003618802DAE60F100C5F02A"
+               BuildableName = "MoviesLoaderTests.xctest"
+               BlueprintName = "MoviesLoaderTests"
+               ReferencedContainer = "container:MovieQuiz.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "0036189A2DAE617000C5F02A"
+               BuildableName = "MovieQuizViewControllerMock.xctest"
+               BlueprintName = "MovieQuizViewControllerMock"
+               ReferencedContainer = "container:MovieQuiz.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "00EAF1A72DAEB603006CB90B"
+               BuildableName = "MovieQuizUITests.xctest"
+               BlueprintName = "MovieQuizUITests"
+               ReferencedContainer = "container:MovieQuiz.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
