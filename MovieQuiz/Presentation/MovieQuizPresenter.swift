@@ -1,14 +1,24 @@
 import UIKit
 
-final class MovieQuizPresenter {
+final class MovieQuizPresenter: QuestionFactoryDelegate {
+    
     let questionsAmount: Int = 10
     private var currentQuestionIndex: Int = 0
     var currentQuestion: QuizQuestion?
     var correctAnswers = 0
     var statisticService: StatisticServiceProtocol = StatisticService()
     var questionFactory: QuestionFactoryProtocol?
-    weak var viewController: MovieQuizViewController?
+    weak var viewController: MovieQuizViewControllerProtocol?
     
+    init(viewController: MovieQuizViewControllerProtocol) {
+        self.viewController = viewController
+        
+        questionFactory = QuestionFactory(moviesLoader: MoviesLoader(), delegate: self)
+        questionFactory?.loadData()
+        viewController.showLoadingIndicator()
+    }
+    
+    // MARK: - Public Methods
     func yesButtonClicked() {
         didAdswer(isYes: true)
     }
@@ -44,7 +54,16 @@ final class MovieQuizPresenter {
             self.viewController?.hideLoadingIndicator()
         }
     }
-
+    
+    func didLoadDataFromServer() {
+        viewController?.hideLoadingIndicator()
+        questionFactory?.requestNextQuestion()
+    }
+    
+    func didFailToLoadData(with error: Error) {
+        viewController?.showNetworkError(message: error.localizedDescription)
+    }
+    
     func showNextQuestionOrResults() {
         viewController?.startImageBorder()
         if self.isLastQuestion() {
@@ -67,7 +86,7 @@ final class MovieQuizPresenter {
                     self.questionFactory?.loadData()
                     self.viewController?.hideLoadingIndicator()
                 })
-            viewController?.alertPresenter.show(result: viewModel)
+            viewController?.showAlert(result: viewModel)
         } else {
             switchToNextQuestion()
             questionFactory?.loadData()
@@ -76,11 +95,29 @@ final class MovieQuizPresenter {
         }
     }
     
+    func showAnswerResult(isCorrect: Bool) {
+        if isCorrect == true {
+            viewController?.hightlightImageBorder(isCorrectAnswer: true)
+            correctAnswers += 1
+            viewController?.buttonDisable()
+            viewController?.showLoadingIndicator()
+        }
+        else {
+            viewController?.hightlightImageBorder(isCorrectAnswer: false)
+            viewController?.buttonDisable()
+            viewController?.showLoadingIndicator()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
+        }
+    }
+    
+    // MARK: - Private Methods
     private func didAdswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
         }
         let givenAnswer = isYes
-        viewController?.showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
+        showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
 }

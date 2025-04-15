@@ -1,0 +1,45 @@
+{
+  "configurations" : [
+    {
+      "id" : "C25C0837-325F-443B-9D54-FC9B91BD0D8D",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:MovieQuiz.xcodeproj",
+        "identifier" : "003E58D82DA3E4BF0067747E",
+        "name" : "MovieQuizUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:MovieQuiz.xcodeproj",
+        "identifier" : "008E4A452DAE688A0011B1AE",
+        "name" : "MovieQuizViewControllerMock"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:MovieQuiz.xcodeproj",
+        "identifier" : "003E58C92DA2DC210067747E",
+        "name" : "MoviesLoaderTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:MovieQuiz.xcodeproj",
+        "identifier" : "003E58AE2D9FC3100067747E",
+        "name" : "ArrayTests"
+      }
+    }
+  ],
+  "version" : 1
+}
