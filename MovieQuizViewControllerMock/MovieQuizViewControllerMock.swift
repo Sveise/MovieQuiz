@@ -3,39 +3,39 @@ import XCTest
 
 final class MovieQuizViewControllerMock: MovieQuizViewControllerProtocol {
     func startImageBorder() {
-        
+        //nothing
     }
     
     func showAlert(result: MovieQuiz.AlertModel) {
-        
+        //nothing
     }
     
     func buttonActive() {
-        
+        //nothing
     }
     
     func buttonDisable() {
-        
+        //nothing
     }
     
     func show(quiz step: MovieQuiz.QuizStepViewModel) {
-        
+        //nothing
     }
     
     func hightlightImageBorder(isCorrectAnswer: Bool) {
-        
+        //nothing
     }
     
     func showLoadingIndicator() {
-        
+        //nothing
     }
     
     func hideLoadingIndicator() {
-        
+        //nothing
     }
     
     func showNetworkError(message: String) {
-        
+        //nothing
     }
 }
 

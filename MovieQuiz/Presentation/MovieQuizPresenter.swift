@@ -40,7 +40,10 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
     }
     
     func convert(model: QuizQuestion) -> QuizStepViewModel {
-        QuizStepViewModel(image: UIImage(data: model.imageData) ?? UIImage(), question: model.text, questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
+        QuizStepViewModel(
+            image: UIImage(data: model.imageData) ?? UIImage(),
+            question: model.text,
+            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)")
     }
     
     func didReceiveNextQuestion(question: QuizQuestion?) {
@@ -95,7 +98,9 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    func showAnswerResult(isCorrect: Bool) {
+    // MARK: - Private Methods
+    
+    private func showAnswerResult(isCorrect: Bool) {
         if isCorrect == true {
             viewController?.hightlightImageBorder(isCorrectAnswer: true)
             correctAnswers += 1
@@ -112,7 +117,6 @@ final class MovieQuizPresenter: QuestionFactoryDelegate {
         }
     }
     
-    // MARK: - Private Methods
     private func didAdswer(isYes: Bool) {
         guard let currentQuestion = currentQuestion else {
             return
